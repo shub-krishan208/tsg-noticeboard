@@ -19,6 +19,7 @@ services:
       - DB_PASSWORD=${POSTGRES_PASSWORD}
       - DB_NAME=${POSTGRES_DB}
       - DB_PORT=5432
+      - JWT_SECRET=${JWT_SECRET}
     ports:
       - "5000:5000"
     volumes:

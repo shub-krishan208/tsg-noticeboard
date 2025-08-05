@@ -7,6 +7,8 @@ const sequelize = require("./config/database");
 const Admin = require("./models/admin");
 const Notice = require("./models/notice");
 
+const authRoutes = require("./routes/authRoutes");
+
 const app = express();
 const PORT = 5000;
 
@@ -19,6 +21,9 @@ app.get("/", (req, res) => {
   //this message is shown on the webpage for now
   res.send("Backend API is now connected to the database!");
 });
+
+// to accept POST requests also, we use .use() instead of .get
+app.use("/api/auth", authRoutes);
 
 const createDefaultAdmin = async () => {
   try {
