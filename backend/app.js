@@ -8,6 +8,7 @@ const Admin = require("./models/admin");
 const Notice = require("./models/notice");
 
 const authRoutes = require("./routes/authRoutes");
+const noticeRoutes = require("./routes/noticeRoutes");
 
 const app = express();
 const PORT = 5000;
@@ -24,6 +25,8 @@ app.get("/", (req, res) => {
 
 // to accept POST requests also, we use .use() instead of .get
 app.use("/api/auth", authRoutes);
+
+app.use("/api/notices", noticeRoutes);
 
 const createDefaultAdmin = async () => {
   try {
