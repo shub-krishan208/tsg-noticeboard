@@ -1,0 +1,38 @@
+services:
+  db:
+    image: postgres:15-alpine
+    environment:
+      - POSTGRES_USER=myuser
+      - POSTGRES_PASSWORD=mypassword
+      - POSTGRES_DB=noticeboard
+    ports:
+      - "5433:5432" # using port 5433 on host to avoid conflict with locally running servers
+    volumes:
+      - db_data:var/lib/postgresql/data
+
+  backend:
+    build: ./backend
+    restart: always
+    environment:
+      - DB_HOST=db
+      - DB_USER=${POSTGRES_USER}
+      - DB_PASSWORD=${POSTGRES_PASSWORD}
+      - DB_NAME=${POSTGRES_DB}
+      - DB_PORT=5432
+    ports:
+      - "5000:5000"
+    volumes:
+      - ./backend:/usr/src/app
+    depends_on:
+      - db
+
+  frontend:
+    build: ./frontend
+    restart: always
+    volumes:
+      - ./frontend:/usr/src/app
+      - /usr/src/app/node_modules
+    ports:
+      - "3000:3000"
+volumes:
+  db_data:
