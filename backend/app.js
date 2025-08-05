@@ -1,6 +1,6 @@
 const express = require("express");
 const cors = require("cors");
-require("dotenv").config();
+// require("dotenv").config();
 
 const sequelize = require("./config/database");
 
@@ -16,18 +16,40 @@ app.use(express.json()); //parse incoming JSON bodies
 
 // routes
 app.get("/", (req, res) => {
+  //this message is shown on the webpage for now
   res.send("Backend API is now connected to the database!");
 });
+
+const createDefaultAdmin = async () => {
+  try {
+    const adminCount = await Admin.count();
+    if (adminCount === 0) {
+      await Admin.create({
+        username: "admin",
+        password: "password123",
+      });
+      console.log(
+        "Default Admin created for testing, remove this before deployment."
+      );
+    } else {
+      console.log("Admin already exists.");
+    }
+  } catch (err) {
+    console.log("Error while creating admin: ", err);
+  }
+};
 
 const startServer = async () => {
   try {
     console.log("Connecting to the database ... ");
-    await sequelize.authentication();
+    await sequelize.authenticate();
     console.log("Database connection has been established successfully.");
 
     console.log("Synchronizing models with the database ... ");
     await sequelize.sync();
     console.log("All models were synchronized successfully.");
+
+    await createDefaultAdmin();
 
     //start the server after the database is connected
     app.listen(PORT, () => {
