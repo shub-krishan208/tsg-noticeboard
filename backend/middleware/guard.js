@@ -2,7 +2,7 @@ const jwt = require("jsonwebtoken");
 const Admin = require("../models/admin");
 
 // the req, res and next function to execute, as args
-const guard = async (rqe, res, next) => {
+const guard = async (req, res, next) => {
   let token;
 
   // request header must have a token type of 'Bearer'
@@ -14,7 +14,7 @@ const guard = async (rqe, res, next) => {
       // initialize the token as the immediate next string after 'Bearer', separated by ' '
       token = req.headers.authorization.split(" ")[1];
 
-      const decoded = jwt.verify(token, process.env.JSON_SECRET);
+      const decoded = jwt.verify(token, process.env.JWT_SECRET);
 
       // assign the admin id (pk) to the req as designed in the tokne (it has both id and password)
       req.admin = await Admin.findByPk(decoded.id, {
