@@ -53,3 +53,7 @@ fetch('http://localhost:5000/api/auth/login', {
 - Note that .env has proper credentials
 - admins are added properly in a separate object
 - backend port is not exposed anymore
+
+## vulnerabilities
+
+- check commit 3d3e6fc (logout vulnerability)

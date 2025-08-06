@@ -118,6 +118,7 @@ function App() {
       throw new Error("User not logged in");
     } else {
       localStorage.removeItem("authToken");
+      window.location.reload(); // temporary fix, until better is found, for the persisting state of token variable even after logout is performed. Notices could still be created after logout.
       console.log("Logged out successfully");
     }
   };
