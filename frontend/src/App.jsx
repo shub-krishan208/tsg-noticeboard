@@ -2,19 +2,39 @@ import { useState } from "react";
 import "./App.css";
 
 function App() {
-  const viewNotice = (id) => {
-    // try {
-    //   const res = await fetch("/api/notices");
-    //   if (!res.ok) {
-    //     throw new Error("Failed to load the notices");
-    //   }
-
-    //   const notices = await res.json();
-    //   console.log(notices);
-    // } catch (err) {
-    //   console.log("Can't load notices: ", err);
-    // }
+  const viewNotice = () => {
     fetch("/api/notices")
+      .then((res) => {
+        if (!res.ok) {
+          throw new Error("Failed to load notices");
+        }
+        return res.json();
+      })
+      .then((data) => {
+        console.log(data);
+      })
+      .catch((err) => {
+        console.error(err);
+      });
+  };
+  const viewArchivedNotice = () => {
+    fetch("/api/notices/archived")
+      .then((res) => {
+        if (!res.ok) {
+          throw new Error("Failed to load notices");
+        }
+        return res.json();
+      })
+      .then((data) => {
+        console.log(data);
+      })
+      .catch((err) => {
+        console.error(err);
+      });
+  };
+
+  const viewAdmins = () => {
+    fetch("/api/notices/admins")
       .then((res) => {
         if (!res.ok) {
           throw new Error("Failed to load notices");
@@ -36,10 +56,22 @@ function App() {
         </div>
         <div className="my-2 h-3/4 w-svw border-2 border-amber-300 flex p-5">
           <button
-            onClick={viewNotice(1)}
+            onClick={viewNotice}
             className="text-center border-2 p-0.5 border-amber-300 h-[30px] w-[100px] text-amber-50"
           >
             First notice
+          </button>
+          <button
+            onClick={viewArchivedNotice}
+            className="text-center border-2 p-0.5 border-amber-300 h-[30px] w-[100px] text-amber-50"
+          >
+            Archived notice
+          </button>
+          <button
+            onClick={viewAdmins}
+            className="text-center border-2 p-0.5 border-amber-300 h-[30px] w-[100px] text-amber-50"
+          >
+            Admins
           </button>
         </div>
       </div>

@@ -1,5 +1,5 @@
 const Notice = require("../models/notice");
-
+const Admin = require("../models/admin");
 /*
 @access Public
 @route GET /api/notices
@@ -32,6 +32,18 @@ exports.getArchivedNotice = async (req, res) => {
       order: [["createdAt", "DESC"]],
     });
     res.status(200).json(archived);
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ message: "Server Error" });
+  }
+};
+
+exports.getAdmins = async (req, res) => {
+  try {
+    const admins = await Admin.findAll({
+      attributes: { exclude: ["password"] },
+    });
+    res.status(200).json(admins);
   } catch (err) {
     console.error(err);
     res.status(500).json({ message: "Server Error" });
