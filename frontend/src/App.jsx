@@ -98,6 +98,11 @@ function App() {
         })
         .then((data) => {
           localStorage.setItem("authToken", data.token); //storing token in local storage with name "authToken"
+          window.location.reload(); // page doesn't recognize admin is logged in after logging in
+
+          //also, need to reset the username and passwords fields
+          setUsername("");
+          setPassword("");
           console.log("Login successful!");
         })
         .catch((err) => {
@@ -109,6 +114,7 @@ function App() {
     event.preventDefault(); //prevents the default browser refreshing on formsubmission
     if (username.trim() && password.trim()) {
       login(username.trim(), password.trim());
+      console.log("Login successful!");
     } else {
       console.log("Username and password cannot be empty.");
     }
@@ -188,6 +194,7 @@ function App() {
         }
         return res.json().then((data) => {
           console.log(data.message);
+          setDelIndex();
         });
       })
       .catch((err) => {
