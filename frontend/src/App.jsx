@@ -121,45 +121,6 @@ function App() {
   return (
     <>
       <div className="bg-slate-900 h-svh w-svw">
-        <div className="flex justify-center p-2 bg-slate-950 text-amber-100 text-3xl">
-          <strong>Testing Noticeboard stuff</strong>
-        </div>
-        <div className="my-2 h-3/4 w-svw border-2 border-amber-300 flex p-5">
-          <div className="row">
-            <button
-              onClick={viewNotice}
-              className="text-center border-2 p-0.5 border-amber-300 h-[30px] w-[100px] text-amber-50"
-            >
-              First notice
-            </button>
-            <button
-              onClick={viewArchivedNotice}
-              className="text-center border-2 p-0.5 border-amber-300 h-[30px] w-[150px] text-amber-50"
-            >
-              Archived notice
-            </button>
-            <button
-              onClick={viewAdmins}
-              className="text-center border-2 p-0.5 border-amber-300 h-[30px] w-[100px] text-amber-50"
-            >
-              Admins
-            </button>
-          </div>
-          <div className="row">
-            <button
-              onClick={login}
-              className="text-center border-2 p-0.5 border-amber-300 h-[30px] w-[100px] text-amber-50"
-            >
-              Login
-            </button>
-            <button
-              onClick={logout}
-              className="text-center border-2 p-0.5 border-amber-300 h-[30px] w-[100px] text-amber-50"
-            >
-              Logout
-            </button>
-          </div>
-        </div>
         <div className="bg-slate-900 text-amber-100 p-4 sm:p-6 md:p-8">
           <div className="max-w-5xl mx-auto">
             <header className="text-center mb-10 p-4 bg-slate-950 rounded-xl">
