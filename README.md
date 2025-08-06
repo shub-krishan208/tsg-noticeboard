@@ -56,4 +56,4 @@ fetch('http://localhost:5000/api/auth/login', {
 
 ## vulnerabilities
 
-- check commit 3d3e6fc (logout vulnerability)
+- check commit 69810b7 (logout vulnerability)
