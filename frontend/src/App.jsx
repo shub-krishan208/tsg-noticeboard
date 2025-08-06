@@ -132,7 +132,7 @@ function App() {
               </p>
             </header>
 
-            {/* <!-- === Example 4: Auto-Sizing with flex-1 === --> */}
+            {/* Auth functions */}
             <div className="mb-12">
               <h2 className="text-2xl font-semibold mb-3 text-amber-200">
                 Auth functions
@@ -171,6 +171,35 @@ function App() {
                   className="w-30 border-2 border-amber-300 text-amber-50 font-medium p-6 rounded-lg text-center flex-shrink-0 transition-all duration-300 ease-in-out hover:scale-105 hover:border-amber-100 hover:shadow-lg hover:shadow-amber-300/10 cursor-pointer"
                 >
                   Logout
+                </button>
+              </div>
+            </div>
+            {/* View functions */}
+            <div className="mb-12">
+              <h2 className="text-2xl font-semibold mb-3 text-amber-200">
+                2. View functions
+              </h2>
+              <p className="text-amber-300 mb-3">
+                Making api calls for view functions, output at console in json.
+              </p>
+              <div className="flex flex-row gap-4 p-5 bg-slate-950 rounded-xl border-2 border-amber-300">
+                <button
+                  onClick={viewNotice}
+                  className="flex-1 border-2 border-amber-300 text-amber-50 font-medium p-6 rounded-lg text-center transition-all duration-300 ease-in-out hover:scale-105 hover:border-amber-100 hover:shadow-lg hover:shadow-amber-300/10 cursor-pointer"
+                >
+                  View Active Notices
+                </button>
+                <button
+                  onClick={viewArchivedNotice}
+                  className="flex-1 border-2 border-amber-300 text-amber-50 font-medium p-6 rounded-lg text-center transition-all duration-300 ease-in-out hover:scale-105 hover:border-amber-100 hover:shadow-lg hover:shadow-amber-300/10 cursor-pointer"
+                >
+                  View Arcihved Notices
+                </button>
+                <button
+                  onClick={viewAdmins}
+                  className="flex-1 border-2 border-amber-300 text-amber-50 font-medium p-6 rounded-lg text-center transition-all duration-300 ease-in-out hover:scale-105 hover:border-amber-100 hover:shadow-lg hover:shadow-amber-300/10 cursor-pointer"
+                >
+                  View admin list
                 </button>
               </div>
             </div>
