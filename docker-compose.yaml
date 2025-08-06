@@ -1,6 +1,7 @@
 services:
   db:
     image: postgres:15-alpine
+    restart: always
     environment:
       - POSTGRES_USER=${POSTGRES_USER}
       - POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
@@ -24,16 +25,25 @@ services:
       - "5000:5000"
     volumes:
       - ./backend:/usr/src/app
+      - /usr/src/app/node_modules
     depends_on:
       - db
 
   frontend:
-    build: ./frontend
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile.prod
     restart: always
-    volumes:
-      - ./frontend:/usr/src/app
-      - /usr/src/app/node_modules
     ports:
-      - "3000:3000"
+      - 3000:80 # local port 80 to virtual port 80 for nginx
+    depends_on:
+      - backend
+    # for local hosting uncomment this and comment out the nginx service
+    # volumes:
+    #   - ./frontend:/usr/src/app
+    #   - /usr/src/app/node_modules
+    # ports:
+    #   - "5173:3000"
+
 volumes:
   db_data:
