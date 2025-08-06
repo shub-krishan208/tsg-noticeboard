@@ -14,7 +14,7 @@ const app = express();
 const PORT = 5000;
 
 // allowing frontend to get resources from backend
-app.use(cors({ origin: "http://localhost:3000" }));
+app.use(cors({ origin: ["http://localhost:3000", "http://localhost:5173"] })); // must REMOVE port 5173 from here before deploying.
 app.use(express.json()); //parse incoming JSON bodies
 
 // routes
