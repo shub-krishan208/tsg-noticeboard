@@ -33,10 +33,12 @@ const guard = async (req, res, next) => {
       console.error(err);
       res.status(401).json({ message: "Not authorized, invalid token" });
     }
-  }
-
-  if (!token) {
-    console.error("Not authorized or no token found.");
+  } else {
+    if (!token) {
+      console.error("Not authorized or no token found.");
+      return res.status(404).json({ message: "No token found!" });
+    }
+    return res.status(401).json({ message: "Invalid token." });
   }
 };
 

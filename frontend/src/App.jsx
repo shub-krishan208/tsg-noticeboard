@@ -29,6 +29,7 @@ function App() {
       })
       .then((data) => {
         console.log(data);
+        return data;
       })
       .catch((err) => {
         console.error(err);
@@ -98,6 +99,9 @@ function App() {
         .then((data) => {
           localStorage.setItem("authToken", data.token); //storing token in local storage with name "authToken"
           console.log("Login successful!");
+        })
+        .catch((err) => {
+          console.error(err);
         });
     }
   };
@@ -117,7 +121,78 @@ function App() {
       console.log("Logged out successfully");
     }
   };
-  const createNotice = (title, content) => {};
+
+  const [noticeContent, setNoticeContent] = useState("");
+  const [noticeTitle, setNoticeTitle] = useState("");
+  const adminToken = localStorage.getItem("authToken");
+  const createNotice = () => {
+    if (!adminToken) {
+      console.error("No admin user is logged in.");
+      return;
+    }
+    const noticePayload = {
+      title: noticeTitle,
+      content: noticeContent,
+    };
+    fetch(url.dev.notices, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        authorization: adminToken,
+      },
+      body: JSON.stringify(noticePayload),
+    })
+      .then((res) => {
+        if (!res.ok) {
+          return res.json().then((err) => {
+            throw new Error(err.message || "Failed to create new notice!");
+          });
+        }
+        return res.json();
+      })
+      .then((data) => {
+        console.log("New notice sent successfully: ", data);
+      })
+      .catch((err) => {
+        console.error(err);
+      });
+  };
+  const handleCreateNotice = (event) => {
+    event.preventDefault();
+    createNotice();
+  };
+  const [delIndex, setDelIndex] = useState();
+  const delNotice = (event) => {
+    event.preventDefault();
+    if (!adminToken) {
+      console.error("No admin is logged in.");
+      return;
+    }
+    // a placeholder ':id' defined in the notice routes config and this is used in the delete logic in notice controller as req.params.id
+    fetch(url.dev.notices + `/${delIndex}`, {
+      method: "DELETE",
+      headers: {
+        "Content-Type": "application/json",
+        authorization: adminToken,
+      },
+      // params: {
+      //   id: delIndex, //for now just using delete index for the notice, later we can delete notice by using title or other params too
+      // },
+    })
+      .then((res) => {
+        if (!res.ok) {
+          return res.json().then((err) => {
+            throw new Error(err.message || "Couldn't delete the notice.");
+          });
+        }
+        return res.json().then((data) => {
+          console.log(data.message);
+        });
+      })
+      .catch((err) => {
+        console.error(err);
+      });
+  };
   return (
     <>
       <div className="bg-slate-900 h-svh w-svw">
@@ -135,7 +210,7 @@ function App() {
             {/* Auth functions */}
             <div className="mb-12">
               <h2 className="text-2xl font-semibold mb-3 text-amber-200">
-                Auth functions
+                1. Auth functions
               </h2>
               <p className="text-amber-300 mb-3">
                 The token is stored in localstorage as authToken.
@@ -201,6 +276,68 @@ function App() {
                 >
                   View admin list
                 </button>
+              </div>
+            </div>
+            {/* Create function */}
+            <div className="mb-12">
+              <h2 className="text-2xl font-semibold mb-3 text-amber-200">
+                2. Create function
+              </h2>
+              <p className="text-amber-300 mb-3">
+                Making api calls for view functions, output at console in json.
+              </p>
+              <div className="flex flex-col gap-4 p-5 bg-slate-950 rounded-xl border-2 border-amber-300">
+                <form
+                  onSubmit={handleCreateNotice}
+                  className="flex-col space-y-4"
+                >
+                  <div className="px-2">Title</div>
+                  <div>
+                    <textarea
+                      type="text"
+                      placeholder="notice title ..."
+                      aria-label="Notice Title"
+                      value={noticeTitle}
+                      onChange={(e) => setNoticeTitle(e.target.value)}
+                      className="w-[100%] h-15 border-2 border-amber-300 text-amber-50 font-medium p-4 rounded-lg align-text-top "
+                    />
+                  </div>
+                  <div className="px-2">Body</div>
+                  <div>
+                    <textarea
+                      type="text"
+                      placeholder="Notice body ..."
+                      aria-label="Notice Content"
+                      value={noticeContent}
+                      onChange={(e) => setNoticeContent(e.target.value)}
+                      className="w-[100%] h-200 border-2 border-amber-300 text-amber-50 font-medium p-4 rounded-lg align-text-top "
+                    />
+                  </div>
+                  <div className="flex gap-4">
+                    <button
+                      type="submit"
+                      className="w-25 border-2 border-amber-300 text-amber-50 font-medium p-2 rounded-lg text-center transition-all duration-300 ease-in-out hover:scale-105 hover:border-amber-100 hover:shadow-lg hover:shadow-amber-300/10 cursor-pointer"
+                    >
+                      Create
+                    </button>
+                  </div>
+                </form>
+                <form onSubmit={delNotice} className="flex h-auto gap-4">
+                  <button
+                    type="submit"
+                    className="w-25 border-2 border-amber-300 text-amber-50 font-medium p-2 rounded-lg text-center transition-all duration-300 ease-in-out hover:scale-105 hover:border-amber-100 hover:shadow-lg hover:shadow-amber-300/10 cursor-pointer"
+                  >
+                    Delete
+                  </button>
+                  <input
+                    type="integer"
+                    placeholder="id?"
+                    aria-label="Notice ID"
+                    value={delIndex}
+                    onChange={(e) => setDelIndex(e.target.value)}
+                    className="w-15 h-auto border-2 border-amber-300 text-amber-50 font-medium p-4 rounded-lg text-center "
+                  />
+                </form>
               </div>
             </div>
           </div>
