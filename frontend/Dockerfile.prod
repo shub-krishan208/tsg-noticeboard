@@ -1,6 +1,6 @@
 # This will be used to get compiled html code for nginx rev proxy to pass to the browser for direct deployment
 
-FROM node:18-alpine AS build
+FROM node:20-alpine AS build
 WORKDIR /usr/src/app
 COPY package*.json ./
 RUN npm install
