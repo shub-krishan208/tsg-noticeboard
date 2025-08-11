@@ -9,12 +9,14 @@ export const url = {
     archived: "/api/notices/archived",
     admins: "/api/notices/admins",
     login: "/api/auth/login",
+    check: "/api/auth/check",
   },
   dev: {
     notices: api + "/notices",
     archived: api + "/notices/archived",
     admins: api + "/notices/admins",
     login: api + "/auth/login",
+    check: "/api/auth/check",
   },
 };
 
@@ -58,29 +60,70 @@ export const viewAdmins = async () => {
   return res.json();
 };
 
-// Login function
-export const login = async (username, password) => {
+// Reverting back to original login call
+export const login = (user, ps) => {
+  //check if already logged in before logging in again
   if (localStorage.getItem("authToken")) {
     console.log("User already logged in as admin!");
     return;
+  } else {
+    const loginPayload = {
+      username: user,
+      password: ps,
+    };
+    fetch(url.dev.login, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+
+      body: JSON.stringify(loginPayload),
+    })
+      .then((res) => {
+        if (!res.ok) {
+          return res.json().then((err) => {
+            throw new Error(err.message || "Failed to log in");
+          });
+        }
+        return res.json();
+      })
+      .then((data) => {
+        localStorage.setItem("authToken", data.token); //storing token in local storage with name "authToken"
+        window.location.reload(); // page doesn't recognize admin is logged in after logging in
+
+        //also, need to reset the username and passwords fields
+        setUsername("");
+        setPassword("");
+        console.log("Login successful!");
+      })
+      .catch((err) => {
+        console.error(err);
+      });
   }
-
-  const loginPayload = { username, password };
-  const res = await fetch(url.dev.login, {
-    method: "POST",
-    headers: { "Content-Type": "application/json" },
-    body: JSON.stringify(loginPayload),
-  });
-
-  if (!res.ok) {
-    const err = await res.json();
-    throw new Error(err.message || "Failed to log in");
-  }
-
-  const data = await res.json();
-  localStorage.setItem("authToken", data.token);
-  return data;
 };
+// // Login function
+// export const login = async (username, password) => {
+//   if (localStorage.getItem("authToken")) {
+//     console.log("User already logged in as admin!");
+//     return;
+//   }
+
+//   const loginPayload = { username, password };
+//   const res = await fetch(url.dev.login, {
+//     method: "POST",
+//     headers: { "Content-Type": "application/json" },
+//     body: JSON.stringify(loginPayload),
+//   });
+
+//   if (!res.ok) {
+//     const err = await res.json();
+//     throw new Error(err.message || "Failed to log in");
+//   }
+
+//   const data = await res.json();
+//   localStorage.setItem("authToken", data.token);
+//   return data;
+// };
 
 // Logout
 export const logout = () => {
@@ -88,6 +131,25 @@ export const logout = () => {
     throw new Error("User not logged in");
   }
   localStorage.removeItem("authToken");
+};
+
+// auth check
+export const checkAuth = async (adminToken) => {
+  fetch(url.dev.check, {
+    method: "GET",
+    headers: {
+      authorization: adminToken,
+    },
+  })
+    .then((res) => {
+      if (!res.ok) {
+        const err = res.json();
+        throw new Error(err.message || "User Not logged in.");
+      }
+    })
+    .catch((err) => {
+      console.error(err);
+    });
 };
 
 // Create a notice

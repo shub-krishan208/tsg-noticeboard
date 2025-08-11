@@ -1,6 +1,8 @@
+import { useNavigate } from "react-router-dom";
 import gymkhanaLogo from "../assets/gymkhanaLogo.png";
 
 const Header = ({ onLoginClick }) => {
+  const navigate = useNavigate();
   return (
     <header className="bg-black flex justify-between">
       <div className="flex items-center gap-1 px-8 py-4">
@@ -9,6 +11,12 @@ const Header = ({ onLoginClick }) => {
       </div>
       <div className="flex items-center gap-8 text-white px-10 py-4 text-base">
         <div className="text-yellow-400 cursor-pointer">Homepage</div>
+        <div
+          className="text-yellow-400 cursor-pointer"
+          onClick={() => navigate("/publish")}
+        >
+          Publish
+        </div>
         <div
           onClick={onLoginClick}
           className="bg-yellow-400 text-black px-8 py-1 rounded-xl cursor-pointer"
