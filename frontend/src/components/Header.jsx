@@ -11,7 +11,7 @@ const Header = ({ onLoginClick }) => {
         <div className="text-yellow-400 cursor-pointer">Homepage</div>
         <div
           onClick={onLoginClick}
-          className="bg-yellow-400 text-black px-8 py-1 rounded-xl cursor-pointer"
+          className="bg-yellow-400 text-black px-8 py-1 rounded-[8px] cursor-pointer"
         >
           Login
         </div>

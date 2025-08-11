@@ -6,7 +6,7 @@ import bgImage from "../assets/bgImage.jpg";
 const Body = () => {
   return (
     <div
-      className="overflow-hidden flex flex-col items-center w-full h-screen"
+      className="overflow-hidden flex flex-col items-center w-full h-screen bg-cover"
       style={{ backgroundImage: `url(${bgImage})` }}
     >
       <div className="bg-black/80 w-full h-full flex flex-col">
