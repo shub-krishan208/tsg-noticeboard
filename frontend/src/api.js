@@ -1,7 +1,7 @@
 // src/api.js
 
 // Base API URLs
-const api = "http://localhost:5000/api";
+export const api = "http://localhost:5000/api";
 
 export const url = {
   prod: {
