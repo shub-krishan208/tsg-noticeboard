@@ -21,10 +21,27 @@ export const url = {
 // ------------------ Fetch Functions ------------------
 
 // Get all notices
-export const viewNotice = async () => {
-  const res = await fetch(url.dev.notices);
-  if (!res.ok) throw new Error("Failed to load notices");
-  return res.json();
+// export const viewNotice = async () => {
+//   const res = await fetch(url.dev.notices);
+//   if (!res.ok) throw new Error("Failed to load notices");
+//   return res.json();
+// };
+
+export const viewNotice = () => {
+  fetch(url.dev.notices)
+    .then((res) => {
+      if (!res.ok) {
+        throw new Error("Failed to load notices");
+      }
+      return res.json();
+    })
+    .then((data) => {
+      console.log(data);
+      return data;
+    })
+    .catch((err) => {
+      console.error(err);
+    });
 };
 
 // Get archived notices
