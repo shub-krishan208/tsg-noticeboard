@@ -69,4 +69,3 @@ const LoginModal = ({ onClose }) => {
 };
 
 export default LoginModal;
-
