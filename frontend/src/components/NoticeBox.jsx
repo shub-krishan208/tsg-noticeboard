@@ -110,7 +110,8 @@ const NoticeBox = () => {
             {/* Summary Box */}
             <button
               onClick={() => handleExpand(notice.id)}
-              className="w-full text-left flex bg-black border border-yellow-400 rounded p-4 justify-between items-start hover:bg-gray-700 transition"
+              className="w-full text-left flex bg-black border border-yellow-400 rounded p-4 justify-between items-start transition
+                hover:bg-gradient-to-r hover:from-yellow-900/40 hover:to-black hover:scale-[1.015] hover:shadow-lg"
               style={{
                 borderWidth: '2px',
                 borderStyle: 'solid',
@@ -118,11 +119,11 @@ const NoticeBox = () => {
                 borderImageSource: 'linear-gradient(to right, #facc15, #000000)'
               }}
             >
-              <div className="w-1/4 text-center text-yellow-400 text-sm">
+              <div className="flex flex-col items-center justify-center w-16 min-w-0 text-yellow-400 text-xs text-center">
                 <div>{notice.date}</div>
                 <div>{notice.time}</div>
               </div>
-              <div className="w-3/4">
+              <div className="flex-1 pl-4">
                 <div className="text-lg font-semibold">{notice.title}</div>
                 <p className="text-gray-300 text-sm mt-1">{notice.short}</p>
               </div>
