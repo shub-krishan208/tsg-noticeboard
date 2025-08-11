@@ -10,7 +10,12 @@ const Header = ({ onLoginClick }) => {
         <span className="text-white text-lg">TSG</span>
       </div>
       <div className="flex items-center gap-8 text-white px-10 py-4 text-base">
-        <div className="text-yellow-400 cursor-pointer">Homepage</div>
+        <div
+          className="text-yellow-400 cursor-pointer"
+          onClick={() => navigate("/")}
+        >
+          Homepage
+        </div>
         <div
           className="text-yellow-400 cursor-pointer"
           onClick={() => navigate("/publish")}
