@@ -1,6 +1,6 @@
 import { useState } from "react";
-import { useNavigate } from "react-router-dom"; // for redirect
-import { login } from "../api"; // adjust path if needed
+import { useNavigate } from "react-router-dom"; 
+import { login } from "../api";
 
 const LoginModal = ({ onClose }) => {
   const [email, setEmail] = useState("");
@@ -21,7 +21,7 @@ const LoginModal = ({ onClose }) => {
     <div className="fixed inset-0 flex items-center justify-center z-50">
       {/* Overlay */}
       <div
-        className="absolute inset-0 bg-black bg-opacity-60"
+        className="absolute inset-0 bg-opacity-60"
         onClick={onClose}
       ></div>
 
