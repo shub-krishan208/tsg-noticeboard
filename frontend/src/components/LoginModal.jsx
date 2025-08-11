@@ -1,9 +1,27 @@
+import { useState } from "react";
+import { useNavigate } from "react-router-dom"; // for redirect
+import { login } from "../api"; // adjust path if needed
+
 const LoginModal = ({ onClose }) => {
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const navigate = useNavigate();
+
+  const handleLogin = async () => {
+    try {
+      await login(email, password);
+      onClose(); // close modal
+      navigate("/publish"); // redirect to Publish page
+    } catch (err) {
+      alert("Wrong credentials"); // popup
+    }
+  };
+
   return (
     <div className="fixed inset-0 flex items-center justify-center z-50">
       {/* Overlay */}
       <div
-        className="absolute inset-0 bg-opacity-60"
+        className="absolute inset-0 bg-black bg-opacity-60"
         onClick={onClose}
       ></div>
 
@@ -17,6 +35,8 @@ const LoginModal = ({ onClose }) => {
           <input
             type="email"
             placeholder="example@dummy.iitkgp.ac.in"
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
             className="w-full px-3 py-2 rounded bg-gray-700 text-white"
           />
         </div>
@@ -27,13 +47,18 @@ const LoginModal = ({ onClose }) => {
           <input
             type="password"
             placeholder="Password@123"
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
             className="w-full px-3 py-2 rounded bg-gray-700 text-white"
           />
         </div>
 
-        <p className="text-sm text-gray-400 mb-4">Forgot password?</p>
+        <p className="text-sm text-gray-400 mb-4 cursor-pointer">
+          Forgot password?
+        </p>
 
         <button
+          onClick={handleLogin}
           className="bg-yellow-400 text-black w-full py-2 rounded font-bold"
         >
           Login
@@ -44,3 +69,4 @@ const LoginModal = ({ onClose }) => {
 };
 
 export default LoginModal;
+
