@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { FaDownload } from "react-icons/fa";
-import { url } from "../api.js";
+import { url, viewNotice } from "../api.js";
 
 const getCategories = (notices) => {
   const cats = new Set();
@@ -19,49 +19,55 @@ const NoticeBox = () => {
   const [expandedId, setExpandedId] = useState(null);
   const [loading, setLoading] = useState(true);
 
-  // Fetch notices from backend
+  // map notices for frontend
+  const NOTICE_PREVIEW_LENGTH = 120;
+  const mapNotices = (data) =>
+    data.map((n) => {
+      const dateObj = new Date(n.createdAt);
+      return {
+        id: n.id,
+        title: n.title,
+        short:
+          n.content.length > NOTICE_PREVIEW_LENGTH
+            ? n.content.slice(0, NOTICE_PREVIEW_LENGTH) + "..."
+            : n.content,
+        full: n.content,
+        category: n.category || "General",
+        date: dateObj.toLocaleDateString(),
+        time: dateObj.toLocaleTimeString([], {
+          hour: "2-digit",
+          minute: "2-digit",
+        }),
+        attachments: n.attachments || [],
+      };
+    });
+
+  // Fetch notices from backend on each refresh
   useEffect(() => {
-    const fetchNotices = async () => {
+    const fetchData = async () => {
       try {
         setLoading(true);
-        const res = await fetch(url.dev.notices);
-        if (!res.ok) throw new Error("Failed to load notices");
-        const data = await res.json();
-
-        // Map DB fields to UI format
-        const mapped = data.map((n) => ({
-          id: n.id,
-          title: n.title,
-          short:
-            n.content.length > 120
-              ? n.content.slice(0, 120) + "..."
-              : n.content,
-          full: n.content,
-          category: n.category || "General",
-          date: new Date(n.createdAt).toLocaleDateString(),
-          time: new Date(n.createdAt).toLocaleTimeString([], {
-            hour: "2-digit",
-            minute: "2-digit",
-          }),
-          attachments: n.attachments || [], // If you add this to DB later
-        }));
-
+        const data = await viewNotice(); // assuming this returns the array
+        const mapped = mapNotices(data);
         setNotices(mapped);
       } catch (err) {
-        console.error(err);
+        console.error("Failed to fetch notices:", err);
       } finally {
         setLoading(false);
       }
     };
 
-    fetchNotices();
+    fetchData();
   }, []);
+
+  //making notice groups, notices with no category will go to General
 
   const validNotices = notices.filter(
     (n) => n && n.id && n.title && n.short && n.full && n.category
   );
   const tabs = getCategories(validNotices);
 
+  //filter the notices based on the current selected tab
   const filteredNotices =
     selectedTab === "All"
       ? validNotices

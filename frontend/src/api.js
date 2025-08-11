@@ -30,7 +30,7 @@ export const url = {
 // };
 
 export const viewNotice = () => {
-  fetch(url.dev.notices)
+  return fetch(url.dev.notices)
     .then((res) => {
       if (!res.ok) {
         throw new Error("Failed to load notices");
@@ -38,7 +38,7 @@ export const viewNotice = () => {
       return res.json();
     })
     .then((data) => {
-      console.log(data);
+      // console.log(data);
       return data;
     })
     .catch((err) => {
