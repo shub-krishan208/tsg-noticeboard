@@ -29,21 +29,17 @@ export const url = {
 //   return res.json();
 // };
 
-export const viewNotice = () => {
-  fetch(url.dev.notices)
-    .then((res) => {
-      if (!res.ok) {
-        throw new Error("Failed to load notices");
-      }
-      return res.json();
-    })
-    .then((data) => {
-      console.log(data);
-      return data;
-    })
-    .catch((err) => {
-      console.error(err);
-    });
+export const viewNotice = async () => {
+  try {
+    const res = await fetch(url.dev.notices);
+    if (!res.ok) throw new Error("Failed to load notices");
+    const data = await res.json();
+    console.log("Fetched notices raw:", data);
+    return data; // important: return the actual data
+  } catch (err) {
+    console.error("viewNotice error:", err);
+    return []; // always return an array to avoid .map() errors
+  }
 };
 
 // Get archived notices

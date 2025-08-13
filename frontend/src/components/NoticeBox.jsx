@@ -23,7 +23,7 @@ const NoticeBox = () => {
   const NOTICE_PREVIEW_LENGTH = 120;
   const mapNotices = (data) =>
     data.map((n) => {
-      const dateObj = new Date(n.createdAt);
+      const dateObj = n.createdAt ? new Date(n.createdAt) : new Date();
       return {
         id: n.id,
         title: n.title,
@@ -34,10 +34,7 @@ const NoticeBox = () => {
         full: n.content,
         category: n.category || "General",
         date: dateObj.toLocaleDateString(),
-        time: dateObj.toLocaleTimeString([], {
-          hour: "2-digit",
-          minute: "2-digit",
-        }),
+        time: dateObj.toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" }),
         attachments: n.attachments || [],
       };
     });
@@ -48,7 +45,11 @@ const NoticeBox = () => {
       try {
         setLoading(true);
         const data = await viewNotice();
-        const mapped = mapNotices(data);
+        console.log("Fetched notices raw:", data);
+
+        // Ensure we have an array
+        const noticeArray = Array.isArray(data) ? data : data?.notices || [];
+        const mapped = mapNotices(noticeArray);
         setNotices(mapped);
       } catch (err) {
         console.error("Failed to fetch notices:", err);
@@ -59,6 +60,7 @@ const NoticeBox = () => {
 
     fetchData();
   }, []);
+
 
   const validNotices = notices.filter(
     (n) => n && n.id && n.title && n.short && n.full && n.category
