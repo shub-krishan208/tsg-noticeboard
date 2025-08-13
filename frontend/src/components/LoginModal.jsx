@@ -9,11 +9,11 @@ const LoginModal = ({ onClose }) => {
 
   const handleLogin = async () => {
     try {
-      await login(email, password);
-      onClose(); // close modal
-      navigate("/publish"); // redirect to Publish page
+      await login(email, password); // will throw if wrong
+      onClose();
+      navigate("/publish");
     } catch (err) {
-      alert("Wrong credentials"); // popup
+      alert(err.message); // shows proper error
     }
   };
 
