@@ -1,6 +1,8 @@
 import { useState, useEffect } from "react";
 import { FaDownload } from "react-icons/fa";
 import { url, viewNotice } from "../api.js";
+import parse from "html-react-parser";
+import DOMPurify from "dompurify";
 
 const getCategories = (notices) => {
   const cats = new Set();
@@ -20,7 +22,7 @@ const NoticeBox = () => {
   const [loading, setLoading] = useState(true);
 
   // map notices for frontend
-  const NOTICE_PREVIEW_LENGTH = 120;
+  const NOTICE_PREVIEW_LENGTH = 80;
   const mapNotices = (data) =>
     data.map((n) => {
       const dateObj = new Date(n.createdAt);
@@ -183,7 +185,9 @@ const NoticeBox = () => {
               {/* Summary */}
               <div className="flex-1">
                 <div className="text-lg font-semibold">{notice.title}</div>
-                <p className="text-gray-300 text-sm mt-1">{notice.short}</p>
+                <p className="text-gray-300 text-sm mt-1">
+                  {parse(DOMPurify.sanitize(notice.short))}
+                </p>
               </div>
             </button>
 
@@ -202,7 +206,7 @@ const NoticeBox = () => {
                 <div className="md:w-3/4">
                   <h2 className="text-xl font-bold mb-2">{notice.title}</h2>
                   <div className="whitespace-pre-line text-gray-300">
-                    {notice.full}
+                    {parse(DOMPurify.sanitize(notice.full))}
                   </div>
                 </div>
 
