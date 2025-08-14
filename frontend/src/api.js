@@ -20,7 +20,7 @@ export const url = {
   },
 };
 
-export const viewNotice = () => {
+export const viewNotice = async () => {
   return fetch(url.dev.notices)
     .then((res) => {
       if (!res.ok) {

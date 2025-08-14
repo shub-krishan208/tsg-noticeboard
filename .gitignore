@@ -1,6 +1,8 @@
 node_modules
 .env
 .adminjs
+package-lock.json
+
 
 /.pnp
 .pnp.js

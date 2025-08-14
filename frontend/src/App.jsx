@@ -6,7 +6,6 @@ import Publish from "./pages/Publish";
 import LoginModal from "./components/LoginModal";
 import MyNotices from "./pages/MyNotices";
 
-
 function App() {
   // State to manage the login modal visibility
   const [isLoginOpen, setIsLoginOpen] = useState(false);
@@ -26,22 +25,17 @@ function App() {
         <Routes>
           <Route
             path="/"
-            element={
-              <Home onLoginClick={() => setIsLoginOpen(true)} />
-            }
+            element={<Home onLoginClick={() => setIsLoginOpen(true)} />}
           />
           <Route path="/publish" element={<Publish />} />
-          <Route path="/mynotices" element={<MyNotices/>} />
+          <Route path="/mynotices" element={<MyNotices />} />
         </Routes>
       </div>
 
       {/* Modal */}
-      {isLoginOpen && (
-        <LoginModal onClose={() => setIsLoginOpen(false)} />
-      )}
+      {isLoginOpen && <LoginModal onClose={() => setIsLoginOpen(false)} />}
     </div>
   );
-
 }
 
 export default App;
