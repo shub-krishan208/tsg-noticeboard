@@ -5,7 +5,7 @@ function Announcement() {
     <div className="flex justify-center items-center py-4 w-full">
       {/* <img src={announcementIcon} alt="Announcement" className="w-24 h-20" /> */}
       <div className="text-white text-5xl font-black px-4 py-2">
-        Announcements
+        Technology Noticeboard
         {/* <input
           type="text"
           placeholder="Search announcements..."

@@ -6,7 +6,6 @@ const Home = ({ onLoginClick }) => {
   return (
     <div className="bg-gray-100 min-h-screen">
       <Header onLoginClick={onLoginClick} />
-      <Announcement />
       <Body />
     </div>
   );
