@@ -12,8 +12,9 @@ import authProvider from "./middleware/authProvider.js";
 import session from "express-session";
 import { DefaultAuthProvider } from "adminjs";
 import { ComponentLoader } from "adminjs";
-import bcrypt from "bcryptjs";
+import { dark, light } from "@adminjs/themes";
 
+import bcrypt from "bcryptjs";
 import Admin from "./models/admin.js";
 import Notice from "./models/notice.js";
 
@@ -71,6 +72,8 @@ const componentLoader = new ComponentLoader();
 const authprovider = new DefaultAuthProvider({
   componentLoader,
   authenticate,
+  defaultTheme: dark.id,
+  availableThemes: [dark, light],
 });
 
 // setting up adminjs
@@ -128,6 +131,8 @@ const start = async () => {
       companyName: "Technology Students' Gymkhana",
       softwareBrothers: false,
     },
+    defaultTheme: dark.id,
+    availableThemes: [dark, light],
   };
 
   // initializing admin
