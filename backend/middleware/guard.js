@@ -1,5 +1,5 @@
-const jwt = require("jsonwebtoken");
-const Admin = require("../models/admin");
+import jwt from "jsonwebtoken";
+import Admin from "../models/admin.js";
 
 // the req, res and next function to execute, as args
 const guard = async (req, res, next) => {
@@ -42,4 +42,4 @@ const guard = async (req, res, next) => {
   }
 };
 
-module.exports = { guard };
+export { guard };

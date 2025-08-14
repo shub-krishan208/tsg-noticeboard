@@ -1,21 +1,20 @@
-const express = require("express");
-const cors = require("cors");
+import express from "express";
+import cors from "cors";
 // require("dotenv").config();
 
-const sequelize = require("./config/database");
+import sequelize from "./config/database.js";
 
 // adminjs imports
-const AdminJS = require("adminjs");
-const AdminJSExpress = require("@adminjs/express");
-const AdminJSSequelize = require("@adminjs/sequelize");
-const session = require("express-session");
-const bcrypt = require("bcryptjs");
+import AdminJS from "adminjs";
+import AdminJSExpress from "@adminjs/express";
+import AdminJSSequelize from "@adminjs/sequelize";
+import bcrypt from "bcryptjs";
 
-const Admin = require("./models/admin");
-const Notice = require("./models/notice");
+import Admin from "./models/admin.js";
+import Notice from "./models/notice.js";
 
-const authRoutes = require("./routes/authRoutes");
-const noticeRoutes = require("./routes/noticeRoutes");
+import authRoutes from "./routes/authRoutes.js";
+import noticeRoutes from "./routes/noticeRoutes.js";
 
 const app = express();
 const PORT = 5000;
@@ -69,7 +68,7 @@ const adminJsOptions = {
 const adminJs = new AdminJS(adminJsOptions);
 
 // creating the admin router
-const adminRouter = AdminJSExpress.buildRouter(
+const adminRouter = AdminJSExpress.buildAuthenticatedRouter(
   adminJs,
   {
     // auth function

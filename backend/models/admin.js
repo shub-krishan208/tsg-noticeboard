@@ -1,6 +1,6 @@
-const { DataTypes } = require("sequelize");
-const sequelize = require("../config/database");
-const bcrypt = require("bcryptjs");
+import { DataTypes } from "sequelize";
+import sequelize from "../config/database.js";
+import bcrypt from "bcryptjs";
 
 const Admin = sequelize.define(
   "Admin",
@@ -28,4 +28,4 @@ const Admin = sequelize.define(
   }
 );
 
-module.exports = Admin;
+export default Admin;

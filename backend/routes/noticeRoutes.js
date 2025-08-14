@@ -1,16 +1,17 @@
-const express = require("express");
-const router = express.Router();
-const {
+// const express = require("express");
+// const router = express.Router();
+import { Router } from "express";
+import {
   getActiveNotice,
   getArchivedNotice,
   createNotice,
   archiveNotice,
   deleteNotice,
   getAdmins,
-} = require("../controllers/noticeController");
+} from "../controllers/noticeController.js";
 
-const { guard } = require("../middleware/guard");
-
+import { guard } from "../middleware/guard.js";
+const router = Router();
 router.get("/", getActiveNotice);
 router.get("/archived", getArchivedNotice);
 router.get("/admins", getAdmins);
@@ -21,4 +22,4 @@ router.post("/", guard, createNotice);
 router.put("/archive/:id", guard, archiveNotice);
 router.delete("/:id", guard, deleteNotice);
 
-module.exports = router;
+export default router;

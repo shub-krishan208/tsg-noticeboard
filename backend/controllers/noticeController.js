@@ -1,11 +1,11 @@
-const Notice = require("../models/notice");
-const Admin = require("../models/admin");
+import Notice from "../models/notice.js";
+import Admin from "../models/admin.js";
 /*
 @access Public
 @route GET /api/notices
 */
 
-exports.getActiveNotice = async (req, res) => {
+const getActiveNotice = async (req, res) => {
   try {
     const notices = await Notice.findAll({
       where: {
@@ -25,7 +25,7 @@ exports.getActiveNotice = async (req, res) => {
 @access Public
 @route GET /api/notices/archived
 */
-exports.getArchivedNotice = async (req, res) => {
+const getArchivedNotice = async (req, res) => {
   try {
     const archived = await Notice.findAll({
       where: { isArchived: true },
@@ -38,7 +38,7 @@ exports.getArchivedNotice = async (req, res) => {
   }
 };
 
-exports.getAdmins = async (req, res) => {
+const getAdmins = async (req, res) => {
   try {
     const admins = await Admin.findAll({
       attributes: { exclude: ["password"] },
@@ -56,7 +56,7 @@ exports.getAdmins = async (req, res) => {
 @access Private (admin)
 @route POST /api/notices
 */
-exports.createNotice = async (req, res) => {
+const createNotice = async (req, res) => {
   const { title, content } = req.body;
 
   try {
@@ -76,7 +76,7 @@ exports.createNotice = async (req, res) => {
 @access Private (admin)
 @route POST /api/notices/archive/:id
 */
-exports.archiveNotice = async (req, res) => {
+const archiveNotice = async (req, res) => {
   try {
     const notice = await Notice.findByPk(req.params.id);
 
@@ -97,7 +97,7 @@ exports.archiveNotice = async (req, res) => {
 @access Private (admin)
 @route DELETE /api/notices/:id
 */
-exports.deleteNotice = async (req, res) => {
+const deleteNotice = async (req, res) => {
   try {
     const notice = await Notice.findByPk(req.params.id);
 
@@ -111,4 +111,13 @@ exports.deleteNotice = async (req, res) => {
     console.error(err);
     res.status(500).json({ message: "Server Error" });
   }
+};
+
+export {
+  getActiveNotice,
+  getArchivedNotice,
+  getAdmins,
+  createNotice,
+  archiveNotice,
+  deleteNotice,
 };

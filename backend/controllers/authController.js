@@ -1,8 +1,8 @@
-const jwt = require("jsonwebtoken");
-const bcrypt = require("bcryptjs");
-const Admin = require("../models/admin");
+import jwt from "jsonwebtoken";
+import bcrypt from "bcryptjs";
+import Admin from "../models/admin.js";
 
-exports.login = async (req, res) => {
+const login = async (req, res) => {
   const { username, password } = req.body;
 
   try {
@@ -31,3 +31,4 @@ exports.login = async (req, res) => {
     console.log("Error while logging in: ", err);
   }
 };
+export default login;
