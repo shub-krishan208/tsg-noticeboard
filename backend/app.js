@@ -118,7 +118,6 @@ const start = async () => {
         resource: Admin,
         options: {
           properties: {
-            content: { type: "richtext" },
             password: { isVisible: true },
           },
         },
