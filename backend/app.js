@@ -4,6 +4,13 @@ const cors = require("cors");
 
 const sequelize = require("./config/database");
 
+// adminjs imports
+const AdminJS = require("adminjs");
+const AdminJSExpress = require("@adminjs/express");
+const AdminJSSequelize = require("@adminjs/sequelize");
+const session = require("express-session");
+const bcrypt = require("bcryptjs");
+
 const Admin = require("./models/admin");
 const Notice = require("./models/notice");
 
@@ -13,11 +20,87 @@ const noticeRoutes = require("./routes/noticeRoutes");
 const app = express();
 const PORT = 5000;
 
-// allowing frontend to get resources from backend
+// MIDDLEWARE: allowing frontend to get resources from backend
 app.use(cors({ origin: ["http://localhost:3000", "http://localhost:5173"] })); // must REMOVE port 5173 from here before deploying.
 app.use(express.json()); //parse incoming JSON bodies
 
-// routes
+app.use(express.urlencoded({ extended: true })); // HTML form translator for adminsjs
+
+// setting up adminjs
+AdminJS.registerAdapter({
+  Adaptor: AdminJSSequelize,
+  Database: sequelize,
+});
+
+// adminjs config
+const adminJsOptions = {
+  resources: [
+    // adding sequeslize models here
+    {
+      resource: Notice,
+      options: {
+        properties: {
+          content: { type: "richtext" },
+          createdAt: {
+            isVisible: { list: true, filter: true, show: true, edit: false },
+          },
+          updatedAt: {
+            isVisible: { list: true, filter: true, show: true, edit: false },
+          },
+        },
+      },
+    },
+    {
+      resource: Admin,
+      options: {
+        properties: {
+          password: { isVisible: false },
+        },
+      },
+    },
+  ],
+  rootPath: "/admin",
+  branding: {
+    companyName: "Technology Students' Gymkhana",
+    softwareBrothers: false,
+  },
+};
+
+const adminJs = new AdminJS(adminJsOptions);
+
+// creating the admin router
+const adminRouter = AdminJSExpress.buildRouter(
+  adminJs,
+  {
+    // auth function
+    authenticate: async (email, password) => {
+      const admin = await Admin.findOne({ where: { username: email } });
+
+      if (admin) {
+        const matched = await bcrypt.compare(password, admin.password);
+        if (matched) {
+          return admin;
+        }
+      }
+
+      return false; // no user found
+    },
+    cookieName: "adminjs-session",
+    cookiePassword: "a-super-secret-password-for-cookie-signing-32-chars",
+  },
+  null,
+  {
+    secret: process.env.JWT_SECRET,
+    resave: false,
+    saveUninitialized: true,
+  }
+);
+
+app.use(adminJs.options.rootPath, adminRouter);
+
+// -- END --
+
+// API routes
 app.get("/", (req, res) => {
   //this message is shown on the webpage for now
   res.send("Backend API is now connected to the database!");

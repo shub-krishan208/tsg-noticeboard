@@ -1,10 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { FaDownload } from "react-icons/fa";
-<<<<<<< HEAD
 import { url, viewNotice } from "../api.js";
-=======
-import { viewNotice } from "../api.js";
->>>>>>> frontend
 
 const getCategories = (notices) => {
   const cats = new Set();
@@ -27,11 +23,7 @@ const NoticeBox = () => {
   const NOTICE_PREVIEW_LENGTH = 120;
   const mapNotices = (data) =>
     data.map((n) => {
-<<<<<<< HEAD
       const dateObj = new Date(n.createdAt);
-=======
-      const dateObj = n.createdAt ? new Date(n.createdAt) : new Date();
->>>>>>> frontend
       return {
         id: n.id,
         title: n.title,
@@ -42,38 +34,21 @@ const NoticeBox = () => {
         full: n.content,
         category: n.category || "General",
         date: dateObj.toLocaleDateString(),
-<<<<<<< HEAD
         time: dateObj.toLocaleTimeString([], {
           hour: "2-digit",
           minute: "2-digit",
         }),
-=======
-        time: dateObj.toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" }),
->>>>>>> frontend
         attachments: n.attachments || [],
       };
     });
 
-<<<<<<< HEAD
   // Fetch notices from backend on each refresh
-=======
-  // Fetch notices from backend on component mount
->>>>>>> frontend
   useEffect(() => {
     const fetchData = async () => {
       try {
         setLoading(true);
-<<<<<<< HEAD
         const data = await viewNotice(); // assuming this returns the array
         const mapped = mapNotices(data);
-=======
-        const data = await viewNotice();
-        console.log("Fetched notices raw:", data);
-
-        // Ensure we have an array
-        const noticeArray = Array.isArray(data) ? data : data?.notices || [];
-        const mapped = mapNotices(noticeArray);
->>>>>>> frontend
         setNotices(mapped);
       } catch (err) {
         console.error("Failed to fetch notices:", err);
@@ -85,20 +60,13 @@ const NoticeBox = () => {
     fetchData();
   }, []);
 
-<<<<<<< HEAD
   //making notice groups, notices with no category will go to General
-=======
->>>>>>> frontend
-
   const validNotices = notices.filter(
     (n) => n && n.id && n.title && n.short && n.full && n.category
   );
   const tabs = getCategories(validNotices);
 
-<<<<<<< HEAD
   //filter the notices based on the current selected tab
-=======
->>>>>>> frontend
   const filteredNotices =
     selectedTab === "All"
       ? validNotices
@@ -199,12 +167,8 @@ const NoticeBox = () => {
                 borderWidth: "2px",
                 borderStyle: "solid",
                 borderImageSlice: 1,
-<<<<<<< HEAD
                 borderImageSource:
                   "linear-gradient(to right, #facc15, #000000)",
-=======
-                borderImageSource: "linear-gradient(to right, #facc15, #000000)",
->>>>>>> frontend
               }}
             >
               {/* Date/time */}

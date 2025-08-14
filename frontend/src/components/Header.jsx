@@ -21,7 +21,6 @@ const Header = ({ onLoginClick }) => {
         <span className="text-white text-lg">TSG</span>
       </div>
       <div className="flex items-center gap-8 text-white px-10 py-4 text-base">
-<<<<<<< HEAD
         <div
           className="text-yellow-400 cursor-pointer"
           onClick={() => navigate("/")}
@@ -39,10 +38,6 @@ const Header = ({ onLoginClick }) => {
           className="bg-yellow-400 text-black px-8 py-1 rounded-xl cursor-pointer"
         >
           Login
-=======
-        <div className="text-yellow-400 cursor-pointer" onClick={() => navigate("/")}>
-          Homepage
->>>>>>> frontend
         </div>
 
         {token ? (
