@@ -4,6 +4,7 @@ import { Routes, Route } from "react-router-dom";
 import Home from "./pages/Home";
 import Publish from "./pages/Publish";
 import LoginModal from "./components/LoginModal";
+import MyNotices from "./pages/MyNotices";
 
 
 function App() {
@@ -30,6 +31,7 @@ function App() {
             }
           />
           <Route path="/publish" element={<Publish />} />
+          <Route path="/mynotices" element={<MyNotices/>} />
         </Routes>
       </div>
 

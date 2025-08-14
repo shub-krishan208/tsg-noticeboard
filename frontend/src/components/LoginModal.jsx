@@ -1,6 +1,6 @@
 import { useState } from "react";
-import { useNavigate } from "react-router-dom"; // for redirect
-import { login } from "../api"; // adjust path if needed
+import { useNavigate } from "react-router-dom"; 
+import { login } from "../api";
 
 const LoginModal = ({ onClose }) => {
   const [email, setEmail] = useState("");
@@ -9,11 +9,11 @@ const LoginModal = ({ onClose }) => {
 
   const handleLogin = async () => {
     try {
-      await login(email, password);
-      onClose(); // close modal
-      navigate("/publish"); // redirect to Publish page
+      await login(email, password); // will throw if wrong
+      onClose();
+      navigate("/publish");
     } catch (err) {
-      alert("Wrong credentials"); // popup
+      alert(err.message); // shows proper error
     }
   };
 
@@ -21,7 +21,7 @@ const LoginModal = ({ onClose }) => {
     <div className="fixed inset-0 flex items-center justify-center z-50">
       {/* Overlay */}
       <div
-        className="absolute inset-0 bg-black bg-opacity-60"
+        className="absolute inset-0 bg-opacity-60"
         onClick={onClose}
       ></div>
 
