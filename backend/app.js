@@ -8,6 +8,10 @@ import sequelize from "./config/database.js";
 import AdminJS from "adminjs";
 import AdminJSExpress from "@adminjs/express";
 import AdminJSSequelize from "@adminjs/sequelize";
+import authProvider from "./middleware/authProvider.js";
+import session from "express-session";
+import { DefaultAuthProvider } from "adminjs";
+import { ComponentLoader } from "adminjs";
 import bcrypt from "bcryptjs";
 
 import Admin from "./models/admin.js";
@@ -33,52 +37,9 @@ app.use(express.json()); //parse incoming JSON bodies
 
 app.use(express.urlencoded({ extended: true })); // HTML form translator for adminsjs
 
-// setting up adminjs
+// configuring adminjs
 
-// registering adminjs adapter
-AdminJS.registerAdapter({
-  Resource: AdminJSSequelize.Resource,
-  Database: AdminJSSequelize.Database,
-});
-
-// adminjs config
-const adminJsOptions = {
-  database: sequelize,
-  resources: [
-    // adding sequeslize models here
-    {
-      resource: Notice,
-      options: {
-        properties: {
-          content: { type: "richtext" },
-          createdAt: {
-            isVisible: { list: true, filter: true, show: true, edit: false },
-          },
-          updatedAt: {
-            isVisible: { list: true, filter: true, show: true, edit: false },
-          },
-        },
-      },
-    },
-    {
-      resource: Admin,
-      options: {
-        properties: {
-          password: { isVisible: false },
-        },
-      },
-    },
-  ],
-  rootPath: "/admin",
-  branding: {
-    companyName: "Technology Students' Gymkhana",
-    softwareBrothers: false,
-  },
-};
-
-const adminJs = new AdminJS(adminJsOptions);
-
-// auth function
+//auth function
 const authenticate = async (email, password) => {
   console.log(`Trying to authenticate user: ${email}`);
 
@@ -105,29 +66,92 @@ const authenticate = async (email, password) => {
   return false; // no user found
 };
 
-// creating the admin router
-const adminRouter = AdminJSExpress.buildRouter(
-  adminJs,
-  // {
-  //   authenticate,
-  //   cookieName: "adminjs",
-  //   cookiePassword: "a-super-secret-password-for-cookie-signing-32-chars",
-  // },
-  null,
-  {
-    // store: sessionStorage,
-    resave: true,
-    saveUninitialized: true,
-    secret: process.env.JWT_SECRET,
-    cookie: {
-      httpOnly: process.env.NODE_ENV === "production",
-      secure: process.env.NODE_ENV === "production",
-    },
-    name: "adminjs",
-  }
-);
+// start function for adminjs to be called while servers starts
+const start = async () => {
+  const applet = express();
 
-app.use(adminJs.options.rootPath, adminRouter);
+  //creating user session
+  applet.use(
+    session({
+      secret: "a-very-long-32-char-string-top-secret-for-cookie-signing",
+      resave: false,
+      saveUninitialized: true,
+      cookie: {
+        maxAge: 1000 * 60 * 60,
+      },
+    })
+  );
+
+  // registering the orm for the notices
+  AdminJS.registerAdapter({
+    Resource: AdminJSSequelize.Resource,
+    Database: AdminJSSequelize.Database,
+  });
+
+  //giving options to the user
+  const adminOptions = {
+    database: sequelize,
+    resources: [
+      // adding sequeslize models here
+      {
+        resource: Notice,
+        options: {
+          properties: {
+            content: { type: "richtext" },
+            createdAt: {
+              isVisible: { list: true, filter: true, show: true, edit: false },
+            },
+            updatedAt: {
+              isVisible: { list: true, filter: true, show: true, edit: false },
+            },
+          },
+        },
+      },
+      {
+        resource: Admin,
+        options: {
+          properties: {
+            content: { type: "richtext" },
+            password: { isVisible: true },
+          },
+        },
+      },
+    ],
+    rootPath: "/admin",
+    branding: {
+      companyName: "Technology Students' Gymkhana",
+      softwareBrothers: false,
+    },
+  };
+
+  // initializing the user
+  const admin = new AdminJS(adminOptions);
+
+  const secret = "very_secret_secret";
+
+  // building the router
+  const adminRouter = AdminJSExpress.buildAuthenticatedRouter(
+    admin,
+    {
+      authenticate,
+      cookiePassword: "very_secret_secret",
+    },
+    null,
+    {
+      resave: true,
+      saveUninitialized: true,
+      secret,
+    }
+  );
+
+  applet.use(admin.options.rootPath, adminRouter);
+
+  applet.listen(PORT, () => {
+    console.log(
+      `AdminJS started on http://localhost:${PORT}${admin.options.rootPath}`
+    );
+  });
+};
 
 // -- END --
 
@@ -172,7 +196,7 @@ const startServer = async () => {
     console.log("All models were synchronized successfully.");
 
     await createDefaultAdmin();
-
+    await start();
     //start the server after the database is connected
     app.listen(PORT, () => {
       console.log(`Backend server is listening on port: ${PORT}`);
