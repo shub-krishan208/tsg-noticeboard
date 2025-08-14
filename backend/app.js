@@ -37,10 +37,11 @@ app.use(express.json()); //parse incoming JSON bodies
 
 app.use(express.urlencoded({ extended: true })); // HTML form translator for adminsjs
 
-// configuring adminjs
+//configuring adminjs
 
-//auth function
-const authenticate = async (email, password) => {
+// auth function
+// the defaultAuthProvider sends the email and password as an opject so we destructure it in the arguement of authenticate function
+const authenticate = async ({ email, password }) => {
   console.log(`Trying to authenticate user: ${email}`);
 
   try {
@@ -66,7 +67,13 @@ const authenticate = async (email, password) => {
   return false; // no user found
 };
 
-// start function for adminjs to be called while servers starts
+const componentLoader = new ComponentLoader();
+const authprovider = new DefaultAuthProvider({
+  componentLoader,
+  authenticate,
+});
+
+// setting up adminjs
 const start = async () => {
   const applet = express();
 
@@ -82,14 +89,14 @@ const start = async () => {
     })
   );
 
-  // registering the orm for the notices
+  // registering adminjs adapter orm
   AdminJS.registerAdapter({
     Resource: AdminJSSequelize.Resource,
     Database: AdminJSSequelize.Database,
   });
 
-  //giving options to the user
-  const adminOptions = {
+  // adminjs config
+  const adminJsOptions = {
     database: sequelize,
     resources: [
       // adding sequeslize models here
@@ -124,35 +131,33 @@ const start = async () => {
     },
   };
 
-  // initializing the user
-  const admin = new AdminJS(adminOptions);
+  // initializing admin
+  const adminJs = new AdminJS(adminJsOptions);
+  const secret = "very-very-secret";
 
-  const secret = "very_secret_secret";
-
-  // building the router
+  // creating the admin router
   const adminRouter = AdminJSExpress.buildAuthenticatedRouter(
-    admin,
+    adminJs,
     {
-      authenticate,
-      cookiePassword: "very_secret_secret",
+      // "authenticate" was here
+      provider: authprovider,
+      cookiePassword:
+        "a-very-long-32-char-string-top-secret-for-cookie-signing",
     },
     null,
     {
+      secret,
       resave: true,
       saveUninitialized: true,
-      secret,
     }
   );
-
-  applet.use(admin.options.rootPath, adminRouter);
-
+  applet.use(adminJs.options.rootPath, adminRouter);
   applet.listen(PORT, () => {
     console.log(
-      `AdminJS started on http://localhost:${PORT}${admin.options.rootPath}`
+      `AdminJS started on http://localhost:${PORT}${adminJs.options.rootPath}`
     );
   });
 };
-
 // -- END --
 
 // API routes
