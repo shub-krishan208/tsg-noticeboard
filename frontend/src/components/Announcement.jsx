@@ -1,5 +1,3 @@
-import announcementIcon from "../assets/announcement.png";
-
 function Announcement() {
   return (
     <div className="flex justify-center items-center py-4 w-full">
