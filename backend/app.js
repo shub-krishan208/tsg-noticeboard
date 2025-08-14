@@ -26,13 +26,16 @@ app.use(express.json()); //parse incoming JSON bodies
 app.use(express.urlencoded({ extended: true })); // HTML form translator for adminsjs
 
 // setting up adminjs
+
+// registering adminjs adapter
 AdminJS.registerAdapter({
-  Adaptor: AdminJSSequelize,
-  Database: sequelize,
+  Resource: AdminJSSequelize.Resource,
+  Database: AdminJSSequelize.Database,
 });
 
 // adminjs config
 const adminJsOptions = {
+  database: sequelize,
   resources: [
     // adding sequeslize models here
     {
