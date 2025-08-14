@@ -20,7 +20,15 @@ const app = express();
 const PORT = 5000;
 
 // MIDDLEWARE: allowing frontend to get resources from backend
-app.use(cors({ origin: ["http://localhost:3000", "http://localhost:5173"] })); // must REMOVE port 5173 from here before deploying.
+app.use(
+  cors({
+    origin: [
+      "http://localhost:3000",
+      "http://localhost:5173",
+      "http://localhost:5000", // to accept request from backend server too
+    ],
+  })
+); // must REMOVE port 5173 from here before deploying.
 app.use(express.json()); //parse incoming JSON bodies
 
 app.use(express.urlencoded({ extended: true })); // HTML form translator for adminsjs
@@ -70,31 +78,52 @@ const adminJsOptions = {
 
 const adminJs = new AdminJS(adminJsOptions);
 
-// creating the admin router
-const adminRouter = AdminJSExpress.buildAuthenticatedRouter(
-  adminJs,
-  {
-    // auth function
-    authenticate: async (email, password) => {
-      const admin = await Admin.findOne({ where: { username: email } });
+// auth function
+const authenticate = async (email, password) => {
+  console.log(`Trying to authenticate user: ${email}`);
 
-      if (admin) {
-        const matched = await bcrypt.compare(password, admin.password);
-        if (matched) {
-          return admin;
-        }
+  try {
+    const admin = await Admin.findOne({ where: { username: email } });
+
+    if (admin) {
+      console.log(`Admin found in the database.`);
+      const matched = await bcrypt.compare(password, admin.password);
+
+      if (matched) {
+        console.log(`Password match: SUCCESS`);
+        return admin;
+      } else {
+        console.log(`Password match: FAILED`);
       }
+    } else {
+      console.log(`Admin not found in the database.`);
+    }
+  } catch (err) {
+    console.error(`Error during authentication process:`, err);
+  }
 
-      return false; // no user found
-    },
-    cookieName: "adminjs-session",
-    cookiePassword: "a-super-secret-password-for-cookie-signing-32-chars",
-  },
+  return false; // no user found
+};
+
+// creating the admin router
+const adminRouter = AdminJSExpress.buildRouter(
+  adminJs,
+  // {
+  //   authenticate,
+  //   cookieName: "adminjs",
+  //   cookiePassword: "a-super-secret-password-for-cookie-signing-32-chars",
+  // },
   null,
   {
-    secret: process.env.JWT_SECRET,
-    resave: false,
+    // store: sessionStorage,
+    resave: true,
     saveUninitialized: true,
+    secret: process.env.JWT_SECRET,
+    cookie: {
+      httpOnly: process.env.NODE_ENV === "production",
+      secure: process.env.NODE_ENV === "production",
+    },
+    name: "adminjs",
   }
 );
 
