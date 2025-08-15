@@ -159,76 +159,62 @@ const NoticeBox = () => {
         {currentNotices.map((notice) => (
           <div key={notice.id}>
             {/* Summary Box */}
-            <button
-              onClick={() => handleExpand(notice.id)}
-              className="w-full text-left flex bg-black rounded-[10px] p-4 justify-start items-stretch transition
-                hover:bg-gradient-to-r hover:from-yellow-900/40 hover:to-black hover:scale-[1.015] hover:shadow-lg"
-              style={{
-                borderWidth: "2px",
-                borderStyle: "solid",
-                borderImageSlice: 1,
-                borderImageSource: "linear-gradient(to right, #facc15, #000000)",
-              }}
-            >
-              {/* Date/time */}
-              <div className="flex flex-col items-center justify-center w-20 min-w-0 text-yellow-400 text-center">
-                <div className="text-base font-semibold">{notice.date}</div>
-                <div className="text-xs font-semibold mt-1">{notice.time}</div>
-              </div>
+            <div className="p-[2px] rounded-[10px] bg-gradient-to-r from-yellow-400 to-black hover:scale-[1.015] hover:shadow-lg transition">
+              <button
+                onClick={() => handleExpand(notice.id)}
+                className="w-full text-left flex bg-black rounded-[8px] p-4 justify-start items-stretch"
+              >
+                {/* Date/time */}
+                <div className="flex flex-col items-center justify-center w-20 min-w-0 text-yellow-400 text-center">
+                  <div className="text-base font-semibold">{notice.date}</div>
+                  <div className="text-xs font-semibold mt-1">{notice.time}</div>
+                </div>
 
-              {/* Yellow line */}
-              <div className="w-[2px] bg-yellow-400 mx-4 rounded-full self-stretch"></div>
+                {/* Yellow line */}
+                <div className="w-[2px] bg-yellow-400 mx-4 rounded-full self-stretch"></div>
 
-              {/* Summary */}
-              <div className="flex-1">
-                <div className="text-lg font-semibold">{notice.title}</div>
-                <p className="text-gray-300 text-sm mt-1">{notice.short}</p>
-              </div>
-            </button>
+                {/* Summary */}
+                <div className="flex-1">
+                  <div className="text-lg font-semibold">{notice.title}</div>
+                  <p className="text-gray-300 text-sm mt-1">{notice.short}</p>
+                </div>
+              </button>
+            </div>
 
             {/* Expanded Box */}
             {expandedId === notice.id && (
-              <div
-                className="mt-3 border border-yellow-400 bg-black p-6 flex flex-col md:flex-row gap-6"
-                style={{
-                  borderWidth: "2px",
-                  borderStyle: "solid",
-                  borderImageSlice: 1,
-                  borderImageSource:
-                    "linear-gradient(to right, #facc15, #000000)",
-                }}
-              >
-                <div className="md:w-3/4">
-                  <h2 className="text-xl font-bold mb-2">{notice.title}</h2>
-                  <div className="whitespace-pre-line text-gray-300">
-                    {notice.full}
-                  </div>
-                </div>
-
-                <div className="md:w-1/4 space-y-3">
-                  <div className="text-sm text-gray-400">
-                    {notice.time} {notice.date}
+              <div className="p-[2px] rounded-[10px] bg-gradient-to-r from-yellow-400 to-black mt-3">
+                <div className="bg-black p-6 flex flex-col md:flex-row gap-6 rounded-[8px]">
+                  <div className="md:w-3/4">
+                    <h2 className="text-xl font-bold mb-2">{notice.title}</h2>
+                    <div className="whitespace-pre-line text-gray-300">{notice.full}</div>
                   </div>
 
-                  {notice.attachments?.length > 0 && (
-                    <div>
-                      <div className="text-yellow-400 font-semibold mb-2">
-                        Attachments
-                      </div>
-                      {notice.attachments.map((file, idx) => (
-                        <a
-                          key={idx}
-                          href={file.url}
-                          target="_blank"
-                          rel="noopener noreferrer"
-                          className="flex items-center gap-2 text-sm bg-yellow-400 text-black px-3 py-1 rounded hover:bg-yellow-300"
-                        >
-                          <FaDownload className="text-sm" />
-                          {file.filename}
-                        </a>
-                      ))}
+                  <div className="md:w-1/4 space-y-3">
+                    <div className="text-sm text-gray-400">
+                      {notice.time} {notice.date}
                     </div>
-                  )}
+
+                    {notice.attachments?.length > 0 && (
+                      <div>
+                        <div className="text-yellow-400 font-semibold mb-2">
+                          Attachments
+                        </div>
+                        {notice.attachments.map((file, idx) => (
+                          <a
+                            key={idx}
+                            href={file.url}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="flex items-center gap-2 text-sm bg-yellow-400 text-black px-3 py-1 rounded hover:bg-yellow-300"
+                          >
+                            <FaDownload className="text-sm" />
+                            {file.filename}
+                          </a>
+                        ))}
+                      </div>
+                    )}
+                  </div>
                 </div>
               </div>
             )}
