@@ -2,6 +2,7 @@ import Announcement from "./Announcement";
 import NoticeBox from "./NoticeBox";
 import Footer from "./Footer";
 import bgImage from "../assets/bgImage.jpg";
+import Header from "./Header";
 
 const Body = () => {
   return (
@@ -9,6 +10,7 @@ const Body = () => {
       className="overflow-hidden flex flex-col items-center w-full h-screen bg-cover"
       style={{ backgroundImage: `url(${bgImage})` }}
     >
+      <Header />
       <div className="bg-black/80 w-full h-full flex flex-col">
         {/* Fixed height header */}
         <div className="h-[100px] flex-shrink-0">

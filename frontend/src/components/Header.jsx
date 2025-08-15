@@ -2,7 +2,7 @@ import gymkhanaLogo from "../assets/gymkhanaLogo.png";
 
 const Header = ({ onLoginClick }) => {
   return (
-    <header className="bg-black flex justify-between items-center">
+    <header className="bg-black/80 flex justify-between items-center w-full">
       <a
         href="https://gymkhana.iitkgp.ac.in/"
         target="_blank"
