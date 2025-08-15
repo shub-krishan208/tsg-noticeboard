@@ -10,10 +10,10 @@ const Body = () => {
       style={{ backgroundImage: `url(${bgImage})` }}
     >
       <div className="bg-black/80 w-full h-full flex flex-col">
-        {/* Fixed height header
-        <div className="h-[100px] flex-shrink-0">
+        {/* Fixed height header */}
+        <div className="h-[60px] flex-shrink-0">
           <Announcement />
-        </div> */}
+        </div>
 
         {/* Scrollable content */}
         <div className="flex-1 overflow-hidden">

@@ -95,7 +95,8 @@ const NoticeBox = () => {
   };
 
   return (
-    <div className="w-full h-full overflow-y-auto px-4 md:px-52 py-6 text-white scrollbar-hide">
+    <div className="w-full h-full overflow-y-auto px-4 md:px-52 py-6 text-white scrollbar-hide"
+      style={{ scrollbarWidth: "none", msOverflowStyle: "none" }}>
       {/* Tabs */}
       <div className="flex gap-6 text-lg border-b border-gray-600 mb-4">
         {tabs.map((tab) => (
