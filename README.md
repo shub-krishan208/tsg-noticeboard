@@ -9,50 +9,23 @@ make the .env file from the **example.env** provided and provide the necessary i
 
 ## local deployment
 
-run `docker compose up -d --build` in the cloned repo directory and it'd work well.
+- **DOCKER:** run `docker compose up -d --build` in the cloned repo directory and it'd work well.
 
-Backend can be accessed on port 5000 and frontend at 3000. (if backend port is unavailable check docker-compose.yaml and ./backend/Dockerfile for a new port setup.)
+  Backend can be accessed on port 5000 and frontend at 3000. (if backend port is unavailable check docker-compose.yaml and ./backend/Dockerfile for a new port setup.)
 
-### fetch calls on browser console
+- **Frontend:** run `npm install` and `npm run dev` inside the **frontend** directory.
+- **Backend:** since the backend heavily relies on the docker container, it doesn't have to deployed separately
 
-For the admin priviledges commands, use the following command:
+## Walkthrough
 
-```js
-// first get an auth token
-fetch('http://localhost:5000/api/auth/login', {
-    method: 'POST',
-    headers: {
-            'Content-Type': 'application/json',
-        },
-    body: JSON.stringify({
-            username: 'yourname',
-            password: 'yourpassword',
-        }).
-    })
-    .then((res) => {
-          if (!res.ok) {
-            return res.json().then((err) => {
-              throw new Error(err.message || "Failed to log in");
-            });
-          }
-          return res.json();
-        })
-        .then((data) => {
-          const token = data.token;
-          console.log("Login successful!");
-        });
-
-// then make the api call for functions: CreateNotice, DeleteNotice, ArchiveNotice
-
-// CreateNotice
-
-```
+The overall webapp schema is as follows:
 
 ## Checklist before deployment
 
 - Note that .env has proper credentials
-- admins are added properly in a separate object
+- admins are added properly in a separate object (don't use admin panel to add admins, not tested yet)
 - backend port is not exposed anymore
+- port 5173 for vite testing and dev urls are removed in the `app.js` and `api.js`
 
 ## vulnerabilities
 
