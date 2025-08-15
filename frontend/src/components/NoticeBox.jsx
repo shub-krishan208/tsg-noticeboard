@@ -168,22 +168,19 @@ const NoticeBox = () => {
             {/* Summary */}
             <button
               onClick={() => handleExpand(notice.id)}
-              className="w-full text-left flex rounded-[10px] p-4 justify-start items-stretch bg-gradient-to-r from-[#1E1E1E] to-black transition
+              className="w-full text-left flex rounded-[10px] p-5 gap-10 justify-start items-stretch bg-gradient-to-r from-[#1E1E1E] to-black transition
                 hover:bg-gradient-to-r hover:from-yellow-900/40 hover:to-yellow-900/20 hover:scale-[1.015] hover:shadow-lg"
               hidden={isHiddenId === notice.id}
             >
               {/* Date/time */}
-              <div className="flex flex-col items-center justify-center w-20 min-w-0 text-yellow-400 text-center">
+              <div className="flex flex-col items-center justify-center py-2 gap-2 border-r-2 border-yellow-500 w-30 min-w-0 text-yellow-400 text-center">
                 <div className="text-base font-semibold">{notice.date}</div>
                 <div className="text-xs font-semibold mt-1">{notice.time}</div>
               </div>
 
-              {/* Yellow line */}
-              <div className="w-[2px] bg-yellow-400 mx-4 rounded-full self-stretch"></div>
-
               {/* Summary */}
               <div className="flex-1">
-                <div className="text-lg font-semibold">{notice.title}</div>
+                <div className="text-xl font-semibold my-2">{notice.title}</div>
                 <p className="text-gray-300 text-sm mt-1">
                   {parse(DOMPurify.sanitize(notice.short))}
                 </p>
@@ -193,27 +190,20 @@ const NoticeBox = () => {
             {/* Expanded */}
             {expandedId === notice.id && (
               <div onClick={() => handleExpand(null)}>
-                <div
-                  className="mt-3 border border-yellow-500/90 rounded-[10px]  bg-gradient-to-r from-[#1E1E1E] to-black p-6 flex flex-col md:flex-row gap-6"
-                  // style={{
-                  //   borderWidth: "2px",
-                  //   borderStyle: "solid",
-                  //   borderImageSlice: 1,
-                  //   borderImageSource:
-                  //     "linear-gradient(to right, #facc15, #000000)",
-                  // }}
-                >
-                  <div className="md:w-3/4">
-                    <h2 className="text-xl font-bold mb-2">{notice.title}</h2>
+                <div className="mt-3 border border-yellow-500/90 rounded-[10px]  bg-gradient-to-r from-[#1E1E1E] to-black p-10 flex gap-5">
+                  <div className="flex-col w-auto gap-10 flex-1">
+                    <div className="text-2xl font-bold mb-2">
+                      {notice.title}
+                    </div>
                     <div className="whitespace-pre-line text-gray-300">
-                      {parse(DOMPurify.sanitize(notice.full))}
+                      {parse(notice.full)}
                     </div>
                   </div>
-                  <div className="md:w-1/4 space-y-3">
-                    <div className="text-sm text-gray-400">
+                  <div className="w-28 border-l-2 border-yellow-500 pl-3 space-y-3 flex-shrink-">
+                    <div className="text-sm text-white font-semibold">
                       {notice.time} {notice.date}
                     </div>
-                    {notice.attachments?.length > 0 && (
+                    {/* {notice.attachments?.length > 0 && (
                       <div>
                         <div className="text-yellow-400 font-semibold mb-2">
                           Attachments
@@ -231,7 +221,7 @@ const NoticeBox = () => {
                           </a>
                         ))}
                       </div>
-                    )}
+                    )} */}
                   </div>
                 </div>
               </div>
