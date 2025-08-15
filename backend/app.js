@@ -16,7 +16,6 @@ import bcrypt from "bcryptjs";
 import Admin from "./models/admin.js";
 import Notice from "./models/notice.js";
 
-import authRoutes from "./routes/authRoutes.js";
 import noticeRoutes from "./routes/noticeRoutes.js";
 
 const app = express();
@@ -158,7 +157,6 @@ app.get("/", (req, res) => {
 });
 
 // to accept POST requests also, we use .use() instead of .get
-app.use("/api/auth", authRoutes);
 app.use("/api/notices", noticeRoutes);
 
 const createDefaultAdmin = async () => {
