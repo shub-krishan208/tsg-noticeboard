@@ -169,14 +169,7 @@ const NoticeBox = () => {
             <button
               onClick={() => handleExpand(notice.id)}
               className="w-full text-left flex rounded-[10px] p-4 justify-start items-stretch bg-gradient-to-r from-[#1E1E1E] to-black transition
-                hover:bg-gradient-to-r hover:from-yellow-900/40 hover:to-black hover:scale-[1.015] hover:shadow-lg"
-              style={{
-                borderWidth: "2px",
-                borderStyle: "solid",
-                borderImageSlice: 1,
-                borderImageSource:
-                  "linear-gradient(to right, #f1c40f80, #000000)",
-              }}
+                hover:bg-gradient-to-r hover:from-yellow-900/40 hover:to-yellow-900/20 hover:scale-[1.015] hover:shadow-lg"
               hidden={isHiddenId === notice.id}
             >
               {/* Date/time */}
@@ -201,14 +194,14 @@ const NoticeBox = () => {
             {expandedId === notice.id && (
               <div onClick={() => handleExpand(null)}>
                 <div
-                  className="mt-3  bg-gradient-to-r from-[#1E1E1E] to-black p-6 flex flex-col md:flex-row gap-6"
-                  style={{
-                    borderWidth: "2px",
-                    borderStyle: "solid",
-                    borderImageSlice: 1,
-                    borderImageSource:
-                      "linear-gradient(to right, #facc15, #000000)",
-                  }}
+                  className="mt-3 border border-yellow-500/90 rounded-[10px]  bg-gradient-to-r from-[#1E1E1E] to-black p-6 flex flex-col md:flex-row gap-6"
+                  // style={{
+                  //   borderWidth: "2px",
+                  //   borderStyle: "solid",
+                  //   borderImageSlice: 1,
+                  //   borderImageSource:
+                  //     "linear-gradient(to right, #facc15, #000000)",
+                  // }}
                 >
                   <div className="md:w-3/4">
                     <h2 className="text-xl font-bold mb-2">{notice.title}</h2>
