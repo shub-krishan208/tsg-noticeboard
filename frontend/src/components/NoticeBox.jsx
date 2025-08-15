@@ -74,10 +74,12 @@ const NoticeBox = () => {
       ? validNotices
       : validNotices.filter((n) => n.category === selectedTab);
 
+  //calc number of pages for each tab
   const totalPages = Math.max(
     1,
     Math.ceil(filteredNotices.length / NOTICES_PER_PAGE)
   );
+
   const currentNotices = filteredNotices.slice(
     (currentPage - 1) * NOTICES_PER_PAGE,
     currentPage * NOTICES_PER_PAGE
@@ -92,8 +94,11 @@ const NoticeBox = () => {
     setExpandedId(null);
   }, [currentPage]);
 
+  //handle expansion of notices
+  const [isHiddenId, setIsHiddenId] = useState(null);
   const handleExpand = (id) => {
     setExpandedId((prev) => (prev === id ? null : id));
+    setIsHiddenId((prev) => (prev === id ? null : id));
   };
 
   return (
@@ -163,15 +168,16 @@ const NoticeBox = () => {
             {/* Summary */}
             <button
               onClick={() => handleExpand(notice.id)}
-              className="w-full text-left flex bg-black rounded-[10px] p-4 justify-start items-stretch transition
+              className="w-full text-left flex rounded-[10px] p-4 justify-start items-stretch bg-gradient-to-r from-[#1E1E1E] to-black transition
                 hover:bg-gradient-to-r hover:from-yellow-900/40 hover:to-black hover:scale-[1.015] hover:shadow-lg"
               style={{
                 borderWidth: "2px",
                 borderStyle: "solid",
                 borderImageSlice: 1,
                 borderImageSource:
-                  "linear-gradient(to right, #facc15, #000000)",
+                  "linear-gradient(to right, #f1c40f80, #000000)",
               }}
+              hidden={isHiddenId === notice.id}
             >
               {/* Date/time */}
               <div className="flex flex-col items-center justify-center w-20 min-w-0 text-yellow-400 text-center">
@@ -193,47 +199,47 @@ const NoticeBox = () => {
 
             {/* Expanded */}
             {expandedId === notice.id && (
-              <div
-                className="mt-3 border border-yellow-400 bg-black p-6 flex flex-col md:flex-row gap-6"
-                style={{
-                  borderWidth: "2px",
-                  borderStyle: "solid",
-                  borderImageSlice: 1,
-                  borderImageSource:
-                    "linear-gradient(to right, #facc15, #000000)",
-                }}
-              >
-                <div className="md:w-3/4">
-                  <h2 className="text-xl font-bold mb-2">{notice.title}</h2>
-                  <div className="whitespace-pre-line text-gray-300">
-                    {parse(DOMPurify.sanitize(notice.full))}
-                  </div>
-                </div>
-
-                <div className="md:w-1/4 space-y-3">
-                  <div className="text-sm text-gray-400">
-                    {notice.time} {notice.date}
-                  </div>
-
-                  {notice.attachments?.length > 0 && (
-                    <div>
-                      <div className="text-yellow-400 font-semibold mb-2">
-                        Attachments
-                      </div>
-                      {notice.attachments.map((file, idx) => (
-                        <a
-                          key={idx}
-                          href={file.url}
-                          target="_blank"
-                          rel="noopener noreferrer"
-                          className="flex items-center gap-2 text-sm bg-yellow-400 text-black px-3 py-1 rounded hover:bg-yellow-300"
-                        >
-                          <FaDownload className="text-sm" />
-                          {file.filename}
-                        </a>
-                      ))}
+              <div onClick={() => handleExpand(null)}>
+                <div
+                  className="mt-3  bg-gradient-to-r from-[#1E1E1E] to-black p-6 flex flex-col md:flex-row gap-6"
+                  style={{
+                    borderWidth: "2px",
+                    borderStyle: "solid",
+                    borderImageSlice: 1,
+                    borderImageSource:
+                      "linear-gradient(to right, #facc15, #000000)",
+                  }}
+                >
+                  <div className="md:w-3/4">
+                    <h2 className="text-xl font-bold mb-2">{notice.title}</h2>
+                    <div className="whitespace-pre-line text-gray-300">
+                      {parse(DOMPurify.sanitize(notice.full))}
                     </div>
-                  )}
+                  </div>
+                  <div className="md:w-1/4 space-y-3">
+                    <div className="text-sm text-gray-400">
+                      {notice.time} {notice.date}
+                    </div>
+                    {notice.attachments?.length > 0 && (
+                      <div>
+                        <div className="text-yellow-400 font-semibold mb-2">
+                          Attachments
+                        </div>
+                        {notice.attachments.map((file, idx) => (
+                          <a
+                            key={idx}
+                            href={file.url}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="flex items-center gap-2 text-sm bg-yellow-400 text-black px-3 py-1 rounded hover:bg-yellow-300"
+                          >
+                            <FaDownload className="text-sm" />
+                            {file.filename}
+                          </a>
+                        ))}
+                      </div>
+                    )}
+                  </div>
                 </div>
               </div>
             )}

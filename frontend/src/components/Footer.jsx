@@ -1,11 +1,11 @@
 const Footer = () => {
   return (
-    <footer className="bg-black text-white py-4">
+    <footer className="flex-col justify-center w-full py-4">
       {/* Top border */}
-      <div className="border-t border-white w-full mb-2"></div>
+      <div className="border-t border-white w-[95%] mb-2 mx-auto"></div>
 
       {/* Text */}
-      <div className="text-center text-sm">
+      <div className="text-center text-white text-sm">
         copyright |{" "}
         <a
           href="/" // Change to your source code link

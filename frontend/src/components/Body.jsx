@@ -1,7 +1,7 @@
 import Announcement from "./Announcement";
 import NoticeBox from "./NoticeBox";
 import Footer from "./Footer";
-import bgImage from "../assets/bgImage.jpg";
+import bgImage from "../assets/bgImage.png";
 import Header from "./Header";
 
 const Body = () => {
