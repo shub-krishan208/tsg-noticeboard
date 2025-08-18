@@ -20,6 +20,14 @@ make the .env file from the **example.env** provided and provide the necessary i
 
 The overall webapp schema is as follows:
 
+```mermaid
+graph LR;
+    A[Client] --Browser GET request--> B(Nginx);
+    B--domain/-->c1(frontend);
+    B--domain/admin (backend)-->c2(admin panel) --login/auth-->c3(dbms UI / edit notices);
+    B--GET domain/notices-->b1(returns notices list from backend)
+```
+
 ## Checklist before deployment
 
 - Note that .env has proper credentials
@@ -27,6 +35,14 @@ The overall webapp schema is as follows:
 - backend port is not exposed anymore
 - port 5173 for vite testing and dev urls are removed in the `app.js` and `api.js`
 
-## vulnerabilities
+## More Features to add
 
-- check commit 69810b7 (logout vulnerability)
+1. Attachment upload feature in adminjs adminpanel
+2. More fluid animations
+3. Search and Filter algos
+4. Category type for the notices
+5. More customised admin panel (theming and stuff if needed)
+
+## Vulnerabilities
+
+- check commit 69810b7 (logout vulnerability) => scraped, now using adminjs admin panel for a;; the auth works
